@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriManagement</title>
+    <link rel="stylesheet" href="style1.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container1">
+        <div class="navbar">
+            <img src="images/seedling.png" class="logo">
+            <nav>
+                <ul>
+                    <li><a href="">Home</a></li>
+                    <li><a href="">Profile</a></li>
+                </ul>
+            </nav>
+            <form class="search-form" action="#" method="get">
+                <input type="text" placeholder="Search..." name="search">
+                <button type="submit">Search</button>
+            </form>
+            <img src="images/menu.png" class="menu-icon">
+        </div>
+        
+        <div class="row">
+            <?php
+            // Database connection
+            $servername = "localhost";
+            $username = "username";
+            $password = "password";
+            $dbname = "agrimanagement";
+
+            $conn = new mysqli($servername, $username, $password, $dbname);
+
+            // Check connection
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+
+            // SQL query to fetch data from farmingitems table
+            $sql = "SELECT item_name, item_description, item_type, harvest, disorder FROM farmingitems";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                // Output data of each row
+                while($row = $result->fetch_assoc()) {
+                    echo '<div class="col">';
+                    echo '<h1>' . htmlspecialchars($row["item_name"]) . '</h1>';
+                    echo '<h3>' . htmlspecialchars($row["item_type"]) . '</h3>';
+                    echo '<p>' . htmlspecialchars($row["item_description"]) . '</p>';
+                    echo '</div>';
+                    echo '<div class="col">';
+                    echo '<div class="card card1">';
+                    echo '<h4><b>Harvesting</b></h4>';
+                    echo '<p>' . htmlspecialchars($row["harvest"]) . '</p>';
+                    echo '</div>';
+                    echo '<div class="card card2">';
+                    echo '<h4><b>Disorder</b></h4>';
+                    echo '<p>' . htmlspecialchars($row["disorder"]) . '</p>';
+                    echo '</div>';
+                    echo '<div class="card card3">';
+                    echo '<h4><b>Characteristics</b></h4>';
+                    echo '<p>Strawberries (*Fragaria* genus) are herbaceous perennials with compound leaves, stolons for asexual reproduction, a fibrous root system.</p>';
+                    echo '</div>';
+                    echo '<div class="card card4">';
+                    echo '<h4><b>Nutritional Benefits</b></h4>';
+                    echo '<p>Strawberries are rich in vitamin C, manganese, antioxidants, and dietary fiber while being low in calories and free of fat and cholesterol.</p>';
+                    echo '</div>';
+                    echo '</div>';
+                }
+            } else {
+                echo "<div class='col'><p>No results found.</p></div>";
+            }
+
+            $conn->close();
+            ?>
+        </div>
+    </div>
+</body>
+</html>
